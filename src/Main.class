@@ -1,0 +1,72 @@
+// Source code is decompiled from a .class file using FernFlower decompiler.
+import java.util.Iterator;
+import java.util.Scanner;
+import models.Cancha;
+import models.SistemaReservas;
+
+public class Main {
+   public Main() {
+   }
+
+   public static void mostrarMenu() {
+      System.out.println("\n--- Sistema de Alquiler de Canchas ---");
+      System.out.println("1. Reservar una cancha");
+      System.out.println("2. Liberar una cancha");
+      System.out.println("3. Ver todas las canchas");
+      System.out.println("4. Salir");
+   }
+
+   public static void mostrarCanchas(SistemaReservas var0) {
+      System.out.println("\nCanchas disponibles y ocupadas:");
+      Iterator var1 = var0.getCanchas().iterator();
+
+      while(var1.hasNext()) {
+         Cancha var2 = (Cancha)var1.next();
+         System.out.println(var2);
+      }
+
+   }
+
+   public static void main(String[] var0) {
+      Scanner var1 = new Scanner(System.in);
+      SistemaReservas var2 = new SistemaReservas();
+
+      while(true) {
+         mostrarMenu();
+         System.out.print("Selecciona una opcion: ");
+         int var7;
+         switch (var1.nextLine()) {
+            case "1":
+               System.out.print("Ingresa el horario de la reserva (HH:MM): ");
+               String var6 = var1.nextLine();
+               if (var2.horarioValido(var6)) {
+                  System.out.print("\u00bfPor cu\u00e1ntas horas deseas reservar la cancha?: ");
+                  var7 = Integer.parseInt(var1.nextLine());
+                  mostrarCanchas(var2);
+                  System.out.print("\nIngresa el ID de la cancha que deseas reservar: ");
+                  int var8 = Integer.parseInt(var1.nextLine());
+                  System.out.print("\u00bfDeseas alquilar la cancha con luz? (s/n): ");
+                  boolean var9 = var1.nextLine().equalsIgnoreCase("s");
+                  var2.reservarCancha(var8, var6, var7, var9);
+               } else {
+                  System.out.println("Horario no v\u00e1lido. El predio est\u00e1 abierto de 13:00 a 02:00.");
+               }
+               break;
+            case "2":
+               System.out.print("Ingresa el ID de la cancha a liberar: ");
+               var7 = Integer.parseInt(var1.nextLine());
+               var2.liberarCancha(var7);
+               break;
+            case "3":
+               mostrarCanchas(var2);
+               break;
+            case "4":
+               System.out.println("Gracias por utilizar el sistema de reservas del Grupo n5!!!");
+               System.out.println("Hasta luego!!!");
+               return;
+            default:
+               System.out.println("Opci\u00f3n no v\u00e1lida. Int\u00e9ntalo de nuevo.");
+         }
+      }
+   }
+}
